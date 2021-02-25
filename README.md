@@ -7,6 +7,7 @@ This repo the following and reports them to DefectDojo.
  **Container Image Scan**
   * Scan (using Clair CLI) all of the images used by Deployment, StatefulSet and Cronjobs
   * On the application repo, scan the image on every commit to a develop branch. If the results are acceptable, commit them to the container registry or fail the workflow/pipeline.
+  * Scan the dockerfile to ensure that distroless image is used
 
 **OWAS Scan of App Endpoints**
   * Scan the applications publicly exposed URLs using OWASP ZAP proxy.
