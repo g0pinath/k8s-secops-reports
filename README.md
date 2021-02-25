@@ -2,10 +2,11 @@
 
 ## Introduction
 
-This repo the following and reports them to DefectDojo.
+This repo does scans and reports them to DefectDojo. Below is the list of scans performed.
   
  **Container Image Scan**
   * Scan (using Clair CLI) all of the images used by Deployment, StatefulSet and Cronjobs
+  The below items should actually exist on the application repo where the source code exists. Example given in this repo is for demonstration purposes only.
   * On the application repo, scan the image on every commit to a develop branch. If the results are acceptable, commit them to the container registry or fail the workflow/pipeline.
   * Scan the dockerfile to ensure that distroless image is used
 
