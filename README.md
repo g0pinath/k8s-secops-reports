@@ -38,7 +38,8 @@ The below secrets needs to be created in GIT.
   - SA_RG_NAME - Storage account RG name where the HTML reports will be checked into.
   - SA_NAME - Storage account  name where the HTML reports will be checked into.
   - BUILD_REQUIRED - set this to FALSE, if you are using this workflow only for deploying. You can use the docker registry image g0pinath/k8s-secops-reports in this case
-
+### To start the job immediately and check if it worked.
+kubectl create job --from=cronjob/k8s-secops-reports k8s-secops-reports-abc -n dev
 ### List of workflows and their description.
 ## Option 2: Setup CronJobs inside the cluster and they will generate and send the reports.
 
