@@ -63,18 +63,21 @@ jobs:
           initial_status: in_progress
           token: "${{ env.Password }}"
           environment: dev       
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
-          enable-AzPSSession: true     
+      #- name: Login via Az module
+      #  uses: azure/login@v1
+      #  with:
+      #    creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
+      #    enable-AzPSSession: true     
       - run: |    
               $projects = @("k8s-secops-reports")   #only lower case is allowed           
               #$RunID=$env:GITHUB_RUN_NUMBER #should be uncommented.
               $RunID="apr2021" #for troubleshooting only.
               Foreach($project in $projects)
               {
-                #az login --service-principal --username $ENV:ARM_CLIENT_ID --password $ENV:ARM_CLIENT_SECRET --tenant $ENV:ARM_TENANT_ID
+                $ARM_CLIENT_ID = $ENV:ARM_CLIENT_ID
+                $ARM_CLIENT_SECRET = $ENV:ARM_CLIENT_SECRET
+                $ARM_TENANT_ID = $ENV:ARM_TENANT_ID
+                az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
                 az aks Get-Credentials -g $env:K8S_RG_NAME  -n $env:K8S_NAME --overwrite-existing --admin
                 helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml `
                 --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" `
