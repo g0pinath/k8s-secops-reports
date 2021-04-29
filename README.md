@@ -10,6 +10,10 @@ This is when you are running multiple clusters and would like to consolidate the
   
 # Usage
 
+## Pre-requsites:
+- An existing AKS cluster with RBAC enabled.
+- The SPN(Azure app registration) needs to have Azure RBAC permissions of "Azure Kubernetes Service RBAC Reader" or above.
+- The SPN also needs contributor access on the storage account to which the HTML reports will be checked-in to.
 ## Option 1: Setup Git Action Workflows that runs on a schedule and reports.
 
 ### List of workflows and their description.
@@ -25,8 +29,22 @@ This is when you are running multiple clusters and would like to consolidate the
 
 ## Option 2: Setup CronJobs inside the cluster and they will generate and send the reports.
 
-
-
+Set the following environment variables and run the helm chart.
+### Mandatory environment variables
+$ENV:ARM_CLIENT_ID - SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account.
+$ENV:ARM_CLIENT_SECRET - SPN client secret
+$ENV:ARM_TENANT_ID - SPN Azure AD tenant ID
+$env:ARM_SUBSCRIPTION_ID  - Subscription ID where the AKS cluster exists
+$env:K8S_RG_NAME - Resource group name where AKS exists.
+$env:K8S_NAME - AKS name you are connecting to.
+$env:SA_RG_NAME - Storage account RG name where the HTML reports will be checked into.
+$ENV:SA_NAME - Storage account  name where the HTML reports will be checked into.
+$env:SLACK_CHANNEL_TOKEN - the webhook for the slack channel
+### Optional (to override the defaults)
+$env:KUBEHUNTER_HTML_REPORT_NAME - default is kube_hunter_reports.html
+$env:OPA_HTML_REPORT_NAME - default is opa_gatekeeper_reports.html
+$env:containerName - default is reports
+$env:EXTRACT_LOGS_NAMESPACE - default is devops-addons
 
 # Future - WIP
 **Validate the cluster against AKS checklist**
