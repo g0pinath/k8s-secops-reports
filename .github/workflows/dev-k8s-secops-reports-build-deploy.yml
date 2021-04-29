@@ -74,9 +74,6 @@ jobs:
               $RunID="apr2021" #for troubleshooting only.
               Foreach($project in $projects)
               {
-                $ARM_CLIENT_ID = $ENV:ARM_CLIENT_ID
-                $ARM_CLIENT_SECRET = $ENV:ARM_CLIENT_SECRET
-                $ARM_TENANT_ID = $ENV:ARM_TENANT_ID
                 az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
                 az account set -s $env:ARM_SUBSCRIPTION_ID
                 az aks Get-Credentials -g $env:K8S_RG_NAME  -n $env:K8S_NAME --overwrite-existing --admin
