@@ -1,0 +1,95 @@
+name: Dev-K8S-SecOps-Reports-BuildNDeploy
+env:
+  Password: ${{ secrets.DEPLOY_TOKEN_GITHUB }}  
+  runID: ${{ github.run_id }}
+  HELM_EXPERIMENTAL_OCI: 1
+  K8S_NAME: "metaks-np-ae"
+  REPO_NAME: "g0pinath/k8s-secops-reports"
+  k8sNamespace: dev
+  AZURE_CLIENT_ID: ${{ secrets.DEV_AZURE_CLIENT_ID }}  
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}  
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}  
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}  
+  SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }} 
+  DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} 
+  DOCKER_REGISTRY_USER: 'g0pinath'
+  BUILD_REQUIRED: "TRUE"
+  #set this to FALSE, if you are using this workflow only for deploying. You can use the docker registry image g0pinath/k8s-secops-reports in this case
+on:
+  workflow_dispatch:
+  push:
+    branches: [ develop ]  # should be develop   
+
+jobs:
+  Build-All-Pushto-Docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+         ref: ${{ github.ref }}
+      - name: Login via Az module
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
+          enable-AzPSSession: true 
+      - run: |
+              IF($ENV:BUILD_REQUIRED -EQ "TRUE")
+              {
+                $RunID=$env:GITHUB_RUN_NUMBER            
+                #set local tag name
+                [string]$build_tag = $repo_name + ":" + $RunID              
+                #Build it locally
+                docker build -t $build_tag -f ./Metricon.ClickHome.AdminTables.Web/Dockerfile .   
+                echo "$ENV:DOCKER_REGISTRY_PASSWORD" | docker login --username $ENV:DOCKER_REGISTRY_USER --password-stdin
+                docker push $build_tag
+              }
+            
+        shell: pwsh
+      #- name: Scan image
+      #  uses: anchore/scan-action@v2
+      #  with:
+      #    image: "localbuild/testimage:latest"
+      #    fail-build: true       
+
+#Helm deploy to dev environment
+  kubernetes-deploy-helm-Dev:
+    runs-on: ubuntu-latest
+    needs: Build-All-Pushto-Docker #should be uncommented.
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create deployment
+        uses: chrnorm/deployment-action@releases/v1
+        id: deployment
+        with:
+          initial_status: in_progress
+          token: "${{ env.Password }}"
+          environment: dev           
+      - run: |    
+              $projects = @("k8s-secops-reports")   #only lower case is allowed           
+              $RunID=$env:GITHUB_RUN_NUMBER
+              Foreach($project in $projects)
+              {
+                helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml `
+                --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" `
+                --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" `
+                --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" `
+                --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME"  `
+                --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN"  
+              }
+            }
+        shell: pwsh
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ env.Password }}"
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ env.Password }}"
+          state: "failure"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}           

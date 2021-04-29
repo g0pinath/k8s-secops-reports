@@ -1,0 +1,45 @@
+replicaCount: 1
+deploymentName: tech-app
+tlsSecretName: ingress-secret-tls
+containerName: tech-app
+containerPort: 3000 # where the container is listening on.
+prometheus:
+ scrapping: "'false'"
+K8S:
+ Type: AKS #  EKS or AKS
+resourceLimits:
+  memory:
+    requests: 25Mi #minimum
+    limits: 250Mi #max
+  cpu:
+    requests: 25m #minimum
+    limits: 25m #max
+service:
+    internalPort: 3000 # where the service is listening on
+    externalPort: 3000 # rules.http.paths.backend.servicePort
+ingress:
+    enabled: true
+    ingressControllerType: nginx #choose either nginx or AGIC for AppGW ingress controller.
+    URL: techapp.cloudkube.xyz
+envVars:
+   VTT_DBUSER: "FROMENVVAR" #postgres@postgres-dev2021
+   VTT_DBPASSWORD: "FROMENVVAR"
+   VTT_DBNAME: "postgres"
+   VTT_DBPORT: 5432
+   VTT_DBHOST: "postgres-servprd.postgres.database.azure.com"
+   VTT_LISTENPORT: "3000"
+   VTT_LISTENHOST: "0.0.0.0"
+
+image:
+  useImagePullSecrets: false
+  repository: aksacrdev01.azurecr.io/
+  pullPolicy: Always
+#nodePoolName: smallpool 
+nodePoolName: apppool01
+buildID: '110' # This is the tag ID for the image. This value will be passed at runtime from the pipeline when helm push
+hpa:
+  dev:
+    cpuAvgUtilization: 50
+    memory_rss: 262144000
+    minReplicas: 2
+    maxReplicas: 4 # if you manually scale to a value more than this. HPA will scale it back automatically.

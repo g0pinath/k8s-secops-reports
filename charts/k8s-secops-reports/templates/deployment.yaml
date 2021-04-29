@@ -1,0 +1,57 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+    labels:
+      app: {{ .Values.deploymentName }}
+      release: {{ .Values.deploymentName }}
+    name: {{ .Values.deploymentName }}
+spec:
+    concurrencyPolicy: Forbid
+    failedJobsHistoryLimit: 1
+    jobTemplate:
+      metadata:        
+        annotations:
+          #container.apparmor.security.beta.kubernetes.io/kube-hunter: runtime/default
+          seccomp.security.alpha.kubernetes.io/defaultProfileName: runtime/default
+        labels:
+          app: {{ .Values.deploymentName }}
+          release: {{ .Values.deploymentName }}
+      spec:
+        template:
+          metadata:
+            annotations:
+              #container.apparmor.security.beta.kubernetes.io/kube-hunter: runtime/default
+              seccomp.security.alpha.kubernetes.io/defaultProfileName: runtime/default
+            labels:
+              app: {{ .Values.deploymentName }}
+              release: {{ .Values.deploymentName }} 
+              #aadpodidbinding: devops-acr-poller-contridentity # this allows the pod to run as MI in Azure.
+          spec:
+            #serviceAccountName: build-robot
+            #nodeSelector:
+                #poolname: largepool
+            containers:
+              image: {{ .Values.image.repository }}
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  memory: {{ .Values.resourceLimits.memory.limits }}
+                  cpu: {{ .Values.resourceLimits.cpu.limits }}
+                requests:
+                  memory: {{ .Values.resourceLimits.memory.requests }}
+                  cpu: {{ .Values.resourceLimits.cpu.requests }}
+              securityContext:
+                allowPrivilegeEscalation: false
+                #runAsUser: 2102
+                privileged: false
+                #readOnlyRootFilesystem: true
+              name: {{ .Values.containerName }} 
+              resources: {}
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            schedulerName: default-scheduler
+            terminationGracePeriodSeconds: 30
+    schedule: '*/1440 * * * *' #should be */1440
+    successfulJobsHistoryLimit: 1
+    suspend: false
+  
