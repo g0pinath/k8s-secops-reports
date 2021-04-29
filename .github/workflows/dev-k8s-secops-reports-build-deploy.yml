@@ -39,7 +39,7 @@ jobs:
                 #set local tag name
                 [string]$build_tag = $env:repo_name + ":" + $RunID              
                 #Build it locally
-                docker build -t $build_tag -f ./Metricon.ClickHome.AdminTables.Web/Dockerfile .   
+                docker build -t $build_tag -f ./docker/Dockerfile .   
                 echo "$ENV:DOCKER_REGISTRY_PASSWORD" | docker login --username $ENV:DOCKER_REGISTRY_USER --password-stdin
                 docker push $build_tag
               }
