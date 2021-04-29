@@ -76,7 +76,7 @@ jobs:
                 --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME"  `
                 --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN"  
               }
-            }
+            
         shell: pwsh
       - name: Update deployment status (success)
         if: success()
