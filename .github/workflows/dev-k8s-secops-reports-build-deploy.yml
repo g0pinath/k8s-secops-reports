@@ -52,7 +52,7 @@ jobs:
 
 #Helm deploy to dev environment
   kubernetes-deploy-helm-Dev:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: Build-All-Pushto-Docker #should be uncommented.
     steps:
       - uses: actions/checkout@v2
@@ -63,11 +63,11 @@ jobs:
           initial_status: in_progress
           token: "${{ env.Password }}"
           environment: dev       
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
-          enable-AzPSSession: true     
+      #- name: Login via Az module
+      #  uses: azure/login@v1
+      #  with:
+      #    creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
+      #    enable-AzPSSession: true     
       - run: |    
               $projects = @("k8s-secops-reports")   #only lower case is allowed           
               #$RunID=$env:GITHUB_RUN_NUMBER #should be uncommented.
