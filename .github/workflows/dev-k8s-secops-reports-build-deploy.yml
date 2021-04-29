@@ -6,7 +6,7 @@ env:
   K8S_NAME: "metaks-np-ae"
   REPO_NAME: "g0pinath/k8s-secops-reports"
   k8sNamespace: dev
-  AZURE_CLIENT_ID: ${{ secrets.DEV_AZURE_CLIENT_ID }}  
+  ARM_CLIENT_ID: ${{ secrets.DEV_ARM_CLIENT_ID }}  
   ARM_CLIENT_SECRET: ${{ secrets.DEV_ARM_CLIENT_SECRET }}  
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}  
   ARM_SUBSCRIPTION_ID: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }}  
