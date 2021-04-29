@@ -1,4 +1,4 @@
-# k8s-secops-reports
+# Introduction
 
 This repo extracts the logs from kubehunter, kube-bench and OPA gatekeeper constraints and publishes them as readable reports.
 This is when you are running multiple clusters and would like to consolidate these reports into a slack channel or email based alerts for monitoring/operations team.
@@ -10,7 +10,7 @@ This is when you are running multiple clusters and would like to consolidate the
   
 # Usage
 
-## Option 1: Setup Git Workflows that runs on a schedule and reports.
+## Option 1: Setup Git Action Workflows that runs on a schedule and reports.
 
 ### List of workflows and their description.
 
@@ -20,6 +20,7 @@ This is when you are running multiple clusters and would like to consolidate the
 
 **Kubernetes Policy Status Report***
   * Report the status of Gatekeeper policies that are not compliant. 
+ 
   `Note: Policies that are set to audit instead of fail(like say a label checker - we dont want to push back too much and hold a Prod Release hostage, just because they missed a label) needs to be reported so we can follow-up and ensure that it stays compliant.`
 
 ## Option 2: Setup CronJobs inside the cluster and they will generate and send the reports.
