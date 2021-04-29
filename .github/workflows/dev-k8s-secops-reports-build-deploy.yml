@@ -7,9 +7,9 @@ env:
   REPO_NAME: "g0pinath/k8s-secops-reports"
   k8sNamespace: dev
   AZURE_CLIENT_ID: ${{ secrets.DEV_AZURE_CLIENT_ID }}  
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}  
+  ARM_CLIENT_SECRET: ${{ secrets.DEV_ARM_CLIENT_SECRET }}  
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}  
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}  
+  ARM_SUBSCRIPTION_ID: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }}  
   SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }} 
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} 
   DOCKER_REGISTRY_USER: 'g0pinath'
@@ -77,7 +77,8 @@ jobs:
                 $ARM_CLIENT_ID = $ENV:ARM_CLIENT_ID
                 $ARM_CLIENT_SECRET = $ENV:ARM_CLIENT_SECRET
                 $ARM_TENANT_ID = $ENV:ARM_TENANT_ID
-                az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+                az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
+                az account set -s $env:ARM_SUBSCRIPTION_ID
                 az aks Get-Credentials -g $env:K8S_RG_NAME  -n $env:K8S_NAME --overwrite-existing --admin
                 helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml `
                 --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" `
