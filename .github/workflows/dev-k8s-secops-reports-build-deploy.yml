@@ -37,7 +37,8 @@ jobs:
               {
                 $RunID=$env:GITHUB_RUN_NUMBER            
                 #set local tag name
-                [string]$build_tag = $env:repo_name + ":" + $RunID              
+                [string]$build_tag = $env:REPO_NAME + ":" + $RunID              
+                Write-Output "tag is $build_tag -- repo name is $env:REPO_NAME"
                 #Build it locally
                 docker build -t $build_tag -f ./docker/Dockerfile .   
                 echo "$ENV:DOCKER_REGISTRY_PASSWORD" | docker login --username $ENV:DOCKER_REGISTRY_USER --password-stdin
