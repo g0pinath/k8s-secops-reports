@@ -9,7 +9,8 @@ env:
   #HTML reports are uploaded to this storage account 
   SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }}
   HTML_REPORT_NAME: "kube_hunter_reports.html"
-
+  EXTRACT_LOGS_NAMESPACE: 'devops-addons'
+    #kube namespace where kubehunter, kube-bench are deployed on.
 on:
   workflow_dispatch:  
   #push:
@@ -39,7 +40,7 @@ jobs:
               $podsjson = kubectl get pods -n devops-addons -o json | convertfrom-json
               $kube_hunter_pod_name = ($podsjson.items | where {$_.metadata.name -like "*kube-hunter*" -and $_.status.phase -like "*Succeeded*"}).metadata.name
               Write-Output "Pod name is -- $kube_hunter_pod_name"
-              $logs = kubectl logs $kube_hunter_pod_name  -n devops-addons  
+              $logs = kubectl logs $kube_hunter_pod_name  -n $env:EXTRACT_LOGS_NAMESPACE
               
               $date = Get-Date -Format yyyy-MM 
               #after midnight date might change so just look for year and month pattern

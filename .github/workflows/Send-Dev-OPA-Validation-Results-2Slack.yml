@@ -9,7 +9,8 @@ env:
   #HTML reports are uploaded to this storage account 
   SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }}
   HTML_REPORT_NAME: "opa_gatekeeper_reports.html"
-
+  EXTRACT_LOGS_NAMESPACE: 'devops-addons'
+    #kube namespace where kubehunter, kube-bench are deployed on.
 on:
   workflow_dispatch:  
   #push:
