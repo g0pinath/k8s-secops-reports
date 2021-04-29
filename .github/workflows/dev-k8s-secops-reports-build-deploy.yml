@@ -14,7 +14,7 @@ env:
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} 
   DOCKER_REGISTRY_USER: 'g0pinath'
   K8S_RG_NAME: "RG-DEV-K8S-CLUSTER"
-  BUILD_REQUIRED: "FALSE"
+  BUILD_REQUIRED: "TRUE"
   #set this to FALSE, if you are using this workflow only for deploying. You can use the docker registry image g0pinath/k8s-secops-reports in this case
 on:
   workflow_dispatch:
@@ -70,8 +70,8 @@ jobs:
       #    enable-AzPSSession: true     
       - run: |    
               $projects = @("k8s-secops-reports")   #only lower case is allowed           
-              #$RunID=$env:GITHUB_RUN_NUMBER #should be uncommented.
-              $RunID="apr2021" #for troubleshooting only.
+              $RunID=$env:GITHUB_RUN_NUMBER #should be uncommented.
+              #$RunID="apr2021" #for troubleshooting only.
               Foreach($project in $projects)
               {
                 az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
