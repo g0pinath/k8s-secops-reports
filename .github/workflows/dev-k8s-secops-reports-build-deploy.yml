@@ -37,7 +37,7 @@ jobs:
               {
                 $RunID=$env:GITHUB_RUN_NUMBER            
                 #set local tag name
-                [string]$build_tag = $repo_name + ":" + $RunID              
+                [string]$build_tag = $env:repo_name + ":" + $RunID              
                 #Build it locally
                 docker build -t $build_tag -f ./Metricon.ClickHome.AdminTables.Web/Dockerfile .   
                 echo "$ENV:DOCKER_REGISTRY_PASSWORD" | docker login --username $ENV:DOCKER_REGISTRY_USER --password-stdin
