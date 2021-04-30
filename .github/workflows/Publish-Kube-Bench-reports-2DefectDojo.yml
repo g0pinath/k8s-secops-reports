@@ -55,7 +55,7 @@ jobs:
               #find the pod name
               $podsjson = kubectl get pods -n devops-addons -o json | convertfrom-json
               $kube_bench_pod_name = ($podsjson.items | where {$_.metadata.name -like "*kube-bench*"}).metadata.name
-              $json = kubectl logs $kube_bench_pod_name  -n devops-addons  | ConvertFrom-Json -Depth 100 
+              $json = kubectl logs $kube_bench_pod_name  -n devops-addons -o json | ConvertFrom-Json -Depth 100 
               $json.controls | ConvertTo-Json -Depth 100 | out-file .\devsecops\Scripts\kube-bench.json
               #we are adding [] at the beginning and end DD needs the json to be in this format.
               $jsonStr = Get-Content .\devsecops\Scripts\kube-bench.json
