@@ -2,7 +2,7 @@ replicaCount: 1
 deploymentName: k8s-secops-reports
 containerName: k8s-secops-reports
 #securityContext:
- allowPrivilegeEscalation: false
+# allowPrivilegeEscalation: false
 #  the docker or the image should have these users or groups setup. #https://stackoverflow.com/questions/53544469/how-to-run-net-core-2-application-in-docker-on-linux-as-non-root/53544813
 #or you will keep getting error 137 when the container tries to start.
 # runAsUser: 1000

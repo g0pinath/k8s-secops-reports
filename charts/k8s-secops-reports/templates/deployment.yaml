@@ -31,8 +31,27 @@ spec:
             #nodeSelector:
                 #poolname: largepool
             containers:
-              image: {{ .Values.image.repository }}
+            - image: "{{ .Values.image.repository }}:{{ .Values.buildID }}"
               imagePullPolicy: IfNotPresent
+              env:
+              - name: ARM_CLIENT_ID
+                value: {{ .Values.envVars.ARM_CLIENT_ID }}
+              - name: ARM_TENANT_ID
+                value: {{ .Values.envVars.ARM_TENANT_ID }}
+              - name: ARM_CLIENT_SECRET
+                value: {{ .Values.envVars.ARM_CLIENT_SECRET }}
+              - name: ARM_SUBSCRIPTION_ID
+                value: {{ .Values.envVars.ARM_SUBSCRIPTION_ID }}
+              - name: K8S_RG_NAME
+                value: {{ .Values.envVars.K8S_RG_NAME }}
+              - name: K8S_NAME
+                value: {{ .Values.envVars.K8S_NAME }}
+              - name: SA_RG_NAME
+                value: {{ .Values.envVars.SA_RG_NAME }}
+              - name: SA_NAME
+                value: {{ .Values.envVars.SA_NAME }}                                
+              - name: SLACK_CHANNEL_TOKEN
+                value: {{ .Values.envVars.SLACK_CHANNEL_TOKEN }}                                
               resources:
                 limits:
                   memory: {{ .Values.resourceLimits.memory.limits }}

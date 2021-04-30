@@ -3,17 +3,18 @@ env:
   Password: ${{ secrets.DEPLOY_TOKEN_GITHUB }}  
   runID: ${{ github.run_id }}
   HELM_EXPERIMENTAL_OCI: 1
-  K8S_NAME: "metaks-np-ae"
+  K8S_NAME: ${{ secrets.DEV_K8S_NAME }}
   REPO_NAME: "g0pinath/k8s-secops-reports"
-  k8sNamespace: dev
-  AZURE_CLIENT_ID: ${{ secrets.DEV_AZURE_CLIENT_ID }}  
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}  
+  k8sNamespace: devops-addons
+  ARM_CLIENT_ID: ${{ secrets.DEV_ARM_CLIENT_ID }}  
+  ARM_CLIENT_SECRET: ${{ secrets.DEV_ARM_CLIENT_SECRET }}  
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}  
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}  
+  ARM_SUBSCRIPTION_ID: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }}  
   SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }} 
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} 
   DOCKER_REGISTRY_USER: 'g0pinath'
-  BUILD_REQUIRED: "TRUE"
+  K8S_RG_NAME: ${{ secrets.DEV_K8S_RG_NAME }}
+  BUILD_REQUIRED: "FALSE"
   #set this to FALSE, if you are using this workflow only for deploying. You can use the docker registry image g0pinath/k8s-secops-reports in this case
 on:
   workflow_dispatch:
@@ -27,19 +28,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
          ref: ${{ github.ref }}
-      - name: Login via Az module
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
-          enable-AzPSSession: true 
+      
       - run: |
               IF($ENV:BUILD_REQUIRED -EQ "TRUE")
               {
                 $RunID=$env:GITHUB_RUN_NUMBER            
                 #set local tag name
-                [string]$build_tag = $repo_name + ":" + $RunID              
+                [string]$build_tag = $env:REPO_NAME + ":" + $RunID              
+                Write-Output "tag is $build_tag -- repo name is $env:REPO_NAME"
                 #Build it locally
-                docker build -t $build_tag -f ./Metricon.ClickHome.AdminTables.Web/Dockerfile .   
+                cd docker
+                docker build -t $build_tag  .   
                 echo "$ENV:DOCKER_REGISTRY_PASSWORD" | docker login --username $ENV:DOCKER_REGISTRY_USER --password-stdin
                 docker push $build_tag
               }
@@ -53,7 +52,7 @@ jobs:
 
 #Helm deploy to dev environment
   kubernetes-deploy-helm-Dev:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: Build-All-Pushto-Docker #should be uncommented.
     steps:
       - uses: actions/checkout@v2
@@ -63,12 +62,28 @@ jobs:
         with:
           initial_status: in_progress
           token: "${{ env.Password }}"
-          environment: dev           
+          environment: dev       
+      #- name: Login via Az module
+      #  uses: azure/login@v1
+      #  with:
+      #    creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
+      #    enable-AzPSSession: true     
       - run: |    
-              $projects = @("k8s-secops-reports")   #only lower case is allowed           
-              $RunID=$env:GITHUB_RUN_NUMBER
+              $projects = @("k8s-secops-reports")   #only lower case is allowed      
+              if($env:BUILD_REQUIRED -eq "TRUE")
+              {
+                $RunID=$env:GITHUB_RUN_NUMBER 
+              }     
+              else
+              {
+                $RunID='latest'
+              }
+              
               Foreach($project in $projects)
               {
+                az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
+                az account set -s $env:ARM_SUBSCRIPTION_ID
+                az aks Get-Credentials -g $env:K8S_RG_NAME  -n $env:K8S_NAME --overwrite-existing --admin
                 helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml `
                 --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" `
                 --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" `
