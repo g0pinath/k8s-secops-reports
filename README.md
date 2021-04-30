@@ -68,6 +68,8 @@ Set the following environment variables and run the helm chart.
 | SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
 
 ### Optional (to override the defaults)
+| Name | Description |
+| - | - |
 | KUBEHUNTER_HTML_REPORT_NAME |  default is kube_hunter_reports.html |
 | OPA_HTML_REPORT_NAME | default is opa_gatekeeper_reports.html |
 | containerName |  default is reports |
