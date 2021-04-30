@@ -22,13 +22,29 @@ This is when you are running multiple clusters and would like to consolidate the
 - The SPN also needs contributor access on the storage account to which the HTML reports will be checked-in to.
 ## Option 1: Setup Git Action Workflows that runs on a schedule and reports.
 The below secrets needs to be created in GIT.
-- DEPLOY_TOKEN_GITHUB - This is required for the workflow to create git deployments. The default token doesnt have the permissions, use your git account to create a PAT with permissions to create deployments in git.
-- ARM_CLIENT_ID - SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account.
-- ARM_CLIENT_SECRET - SPN client secret
-- ARM_TENANT_ID - SPN Azure AD tenant ID
-- ARM_SUBSCRIPTION_ID  - Subscription ID where the AKS cluster exists
-- SLACK_CHANNEL_TOKEN - the webhook for the slack channel
-- DOCKER_REGISTRY_PASSWORD - if you dont intend to update the scripts and push to your docker registry, then skip this.
+| EnvVarName | Description |
+| - | - |
+| ARM_CLIENT_ID |  SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account. |
+| ARM_CLIENT_SECRET | SPN client secret |
+| ARM_TENANT_ID | SPN Azure AD tenant ID |
+| ARM_SUBSCRIPTION_ID | Subscription ID where the AKS cluster exists |
+| K8S_RG_NAME |  Resource group name where AKS exists.|
+| K8S_NAME | AKS name you are connecting to. |
+| SA_RG_NAME | Storage account RG name where the HTML reports will be checked into. |
+| SA_NAME |  Storage account  name where the HTML reports will be checked into. |
+| SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
+| DEPLOY_TOKEN_GITHUB |  This is required for the workflow to create git deployments. The default token doesnt have the permissions, use your git account to create a PAT with permissions to create deployments in git. |
+| DOCKER_REGISTRY_PASSWORD |  if you dont intend to update the scripts and push to your docker registry, then skip this. |
+| DEV_AZURE_CREDENTIALS |  this should contain clientid, clientsecret, tenantid and subscriptionid in JSON format.
+       {
+        "clientId": "<GUID>",
+        "clientSecret": "<GUID>",
+        "subscriptionId": "<GUID>",
+        "tenantId": "<GUID>"        
+        }
+        |
+
+
 - DEV_AZURE_CREDENTIALS - this should contain clientid, clientsecret, tenantid and subscriptionid in JSON format.
        {
         "clientId": "<GUID>",
@@ -55,7 +71,7 @@ The below secrets needs to be created in GIT.
 
 Set the following environment variables and run the helm chart.
 ### Mandatory environment variables
-| Name | Description |
+| EnvVarName | Description |
 | - | - |
 | ARM_CLIENT_ID |  SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account. |
 | ARM_CLIENT_SECRET | SPN client secret |
@@ -68,7 +84,7 @@ Set the following environment variables and run the helm chart.
 | SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
 
 ### Optional (to override the defaults)
-| Name | Description |
+| EnvVarName | Description |
 | - | - |
 | KUBEHUNTER_HTML_REPORT_NAME |  default is kube_hunter_reports.html |
 | OPA_HTML_REPORT_NAME | default is opa_gatekeeper_reports.html |
