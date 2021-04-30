@@ -5,7 +5,7 @@ env:
   HELM_EXPERIMENTAL_OCI: 1
   K8S_NAME: "metaks-np-ae"
   REPO_NAME: "g0pinath/k8s-secops-reports"
-  k8sNamespace: dev
+  k8sNamespace: devops-addons
   ARM_CLIENT_ID: ${{ secrets.DEV_ARM_CLIENT_ID }}  
   ARM_CLIENT_SECRET: ${{ secrets.DEV_ARM_CLIENT_SECRET }}  
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}  
@@ -14,7 +14,7 @@ env:
   DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }} 
   DOCKER_REGISTRY_USER: 'g0pinath'
   K8S_RG_NAME: "RG-DEV-K8S-CLUSTER"
-  BUILD_REQUIRED: "TRUE"
+  BUILD_REQUIRED: "FALSE"
   #set this to FALSE, if you are using this workflow only for deploying. You can use the docker registry image g0pinath/k8s-secops-reports in this case
 on:
   workflow_dispatch:
@@ -69,9 +69,16 @@ jobs:
       #    creds: ${{secrets.DEV_AZURE_CREDENTIALS}}
       #    enable-AzPSSession: true     
       - run: |    
-              $projects = @("k8s-secops-reports")   #only lower case is allowed           
-              $RunID=$env:GITHUB_RUN_NUMBER #should be uncommented.
-              #$RunID="apr2021" #for troubleshooting only.
+              $projects = @("k8s-secops-reports")   #only lower case is allowed      
+              if($env:BUILD_REQUIRED -eq "TRUE")
+              {
+                $RunID=$env:GITHUB_RUN_NUMBER 
+              }     
+              else
+              {
+                $RunID='latest'
+              }
+              
               Foreach($project in $projects)
               {
                 az login --service-principal --username $env:ARM_CLIENT_ID --password $env:ARM_CLIENT_SECRET --tenant $env:ARM_TENANT_ID
