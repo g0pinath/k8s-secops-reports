@@ -5,8 +5,8 @@ This is when you are running multiple clusters and would like to consolidate the
 
 - DefectDojo natively supports kube-bench, so we publish the JSON reports to DefectDojo for kube-bench.
 - kubehunter and OPA gatekeeper reports are sent to Slack.
-- Scan the container images(for the pods in the cluster) using clair CLI and report via Slack.
-- Scan the publicly exposed endpoints using OWASP ZAP and publish them in DefectDojo.
+- Scan the container images(for the pods in the cluster) using clair CLI and report via Slack(WIP)
+- Scan the publicly exposed endpoints using OWASP ZAP and publish them in DefectDojo(WIP)
   
 # Usage
 

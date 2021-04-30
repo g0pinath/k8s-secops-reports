@@ -2,7 +2,6 @@ name: Send-OPA-Gatekeeper-Compliance-2Slack
 env:
   DEV_ARM_SUBSCRIPTION_ID: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }} 
   DEV_K8S_RG_NAME:  ${{ secrets.DEV_K8S_RG_NAME }}
-  DEV_K8S_KV_NAME: ${{ secrets.DEV_K8S_KV_NAME }} 
   DEV_K8S_NAME: ${{ secrets.DEV_K8S_NAME }} 
   REPORTS_STORAGE_KEY: ${{ secrets.DEV_REPORTS_STORAGE_KEY }}
   STORAGE_ACCOUNT_NAME: ${{ secrets.DEV_STORAGE_ACCOUNT_NAME }}
@@ -10,7 +9,7 @@ env:
   SLACK_CHANNEL_TOKEN: ${{ secrets.SLACK_CHANNEL_TOKEN }}
   HTML_REPORT_NAME: "opa_gatekeeper_reports.html"
   EXTRACT_LOGS_NAMESPACE: 'devops-addons'
-    #kube namespace where kubehunter, kube-bench are deployed on.
+  #kube namespace where kubehunter, kube-bench are deployed on.
 on:
   workflow_dispatch:  
   #push:
