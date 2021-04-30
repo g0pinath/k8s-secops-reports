@@ -41,6 +41,7 @@ The below secrets needs to be created in GIT. The below secrets are consumed as 
 
 
 - The below env vars are hardcoded in the workflow file and needs to be reviewed and updated accordingly.
+
 | EnvVarName | WorkFlowToReview | Description |
 | - | - | - |
 | DOCKER_REGISTRY_USER | Dev-K8S-SecOps-Reports-BuildNDeploy |  if you dont intend to update the scripts and push to your docker registry, then skip this. |
