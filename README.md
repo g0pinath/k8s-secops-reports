@@ -55,20 +55,25 @@ The below secrets needs to be created in GIT.
 
 Set the following environment variables and run the helm chart.
 ### Mandatory environment variables
-$ENV:ARM_CLIENT_ID - SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account.
-$ENV:ARM_CLIENT_SECRET - SPN client secret
-$ENV:ARM_TENANT_ID - SPN Azure AD tenant ID
-$env:ARM_SUBSCRIPTION_ID  - Subscription ID where the AKS cluster exists
-$env:K8S_RG_NAME - Resource group name where AKS exists.
-$env:K8S_NAME - AKS name you are connecting to.
-$env:SA_RG_NAME - Storage account RG name where the HTML reports will be checked into.
-$ENV:SA_NAME - Storage account  name where the HTML reports will be checked into.
-$env:SLACK_CHANNEL_TOKEN - the webhook for the slack channel
+| Name | Description |
+| - | - |
+| ARM_CLIENT_ID |  SPN client ID - this should be able to login to the cluster and have reader access, and editor access on the storage account. |
+| ARM_CLIENT_SECRET | SPN client secret |
+| ARM_TENANT_ID | SPN Azure AD tenant ID |
+| ARM_SUBSCRIPTION_ID | Subscription ID where the AKS cluster exists |
+| K8S_RG_NAME |  Resource group name where AKS exists.|
+| K8S_NAME | AKS name you are connecting to. |
+| SA_RG_NAME | Storage account RG name where the HTML reports will be checked into. |
+| SA_NAME |  Storage account  name where the HTML reports will be checked into. |
+| SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
+
 ### Optional (to override the defaults)
-$env:KUBEHUNTER_HTML_REPORT_NAME - default is kube_hunter_reports.html
-$env:OPA_HTML_REPORT_NAME - default is opa_gatekeeper_reports.html
-$env:containerName - default is reports
-$env:EXTRACT_LOGS_NAMESPACE - default is devops-addons, this is the namespace where kube-hunter and kube-bench are running.
+| KUBEHUNTER_HTML_REPORT_NAME |  default is kube_hunter_reports.html |
+| OPA_HTML_REPORT_NAME | default is opa_gatekeeper_reports.html |
+| containerName |  default is reports |
+| EXTRACT_LOGS_NAMESPACE |  default is devops-addons, this is the namespace where kube-hunter and kube-bench are running. |
+
+
 From the root folder of this repo execute the below from PowerShell
 
 `helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME" --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN" `
