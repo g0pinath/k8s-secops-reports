@@ -35,13 +35,11 @@ The below secrets needs to be created in GIT.
 | SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
 | DEPLOY_TOKEN_GITHUB |  This is required for the workflow to create git deployments. The default token doesnt have the permissions, use your git account to create a PAT with permissions to create deployments in git. |
 | DOCKER_REGISTRY_PASSWORD |  if you dont intend to update the scripts and push to your docker registry, then skip this. |
-| DEV_AZURE_CREDENTIALS |  this should contain clientid, clientsecret, tenantid and subscriptionid in JSON format.
-{
+| DEV_AZURE_CREDENTIALS |  this should contain clientid, clientsecret, tenantid and subscriptionid in JSON format.{
         "clientId": "<GUID>",
         "clientSecret": "<GUID>",
         "subscriptionId": "<GUID>",
-        "tenantId": "<GUID>"        
-}        |
+        "tenantId": "<GUID>"}|
 
 
 - DEV_AZURE_CREDENTIALS - this should contain clientid, clientsecret, tenantid and subscriptionid in JSON format.
