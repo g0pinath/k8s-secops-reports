@@ -71,12 +71,7 @@ $env:containerName - default is reports
 $env:EXTRACT_LOGS_NAMESPACE - default is devops-addons, this is the namespace where kube-hunter and kube-bench are running.
 From the root folder of this repo execute the below from PowerShell
 
-`helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml ` \` 
-`                 --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" ` \`
-`                 --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" ` \`
-`                 --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" ` \`
-`                 --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME"  ` \`
-`                 --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN" `
+`helm upgrade --install $project ./charts/$project --namespace $env:k8sNamespace --wait --set buildID=$RunID -f ./charts/$project/dev.values.yaml --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME" --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN" `
 ### List of workflows and their description.
 
 # Future - WIP
