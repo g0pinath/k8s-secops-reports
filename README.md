@@ -108,7 +108,7 @@ Set the following environment variables
 | SLACK_CHANNEL_TOKEN |  the webhook for the slack channel |
 | EXTRACT_LOGS_NAMESPACE | where the kube-hunter and kube-bench pods are running - default is devops-addons |
 
-` docker run  -e ARM_CLIENT_ID="$env:ARM_CLIENT_ID" -e ARM_TENANT_ID="$env:ARM_TENANT_ID" -e ARM_CLIENT_SECRET="$env:ARM_CLIENT_SECRET"  -e ARM_SUBSCRIPTION_ID="$env:ARM_SUBSCRIPTION_ID" -e K8S_RG_NAME="$env:K8S_RG_NAME" -e K8S_NAME="$env:K8S_NAME" -e SA_RG_NAME="$env:SA_RG_NAME"  -e SA_NAME="$env:SA_NAME"  -e SLACK_CHANNEL_TOKEN="$env:SLACK_CHANNEL_TOKEN" -e EXTRACT_LOGS_NAMESPACE="$env:EXTRACT_LOGS_NAMESPACE" g0pinath/k8s-secops-reports:latest `
+` docker run  -e ARM_CLIENT_ID="$env:ARM_CLIENT_ID" -e ARM_TENANT_ID="$env:ARM_TENANT_ID" -e ARM_CLIENT_SECRET="$env:ARM_CLIENT_SECRET"  -e ARM_SUBSCRIPTION_ID="$env:ARM_SUBSCRIPTION_ID" -e K8S_RG_NAME="$env:K8S_RG_NAME" -e K8S_NAME="$env:K8S_NAME" -e SA_RG_NAME="$env:SA_RG_NAME"  -e SA_NAME="$env:SA_NAME"  -e SLACK_CHANNEL_TOKEN="$env:SLACK_CHANNEL_TOKEN" -e EXTRACT_LOGS_NAMESPACE="$env:EXTRACT_LOGS_NAMESPACE" g0pinath/html-reporting-app:latest `
 
 ## Workflow Status
  | Name | Trigger | Status |
