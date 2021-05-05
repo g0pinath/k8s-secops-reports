@@ -87,7 +87,7 @@ Set the following environment variables and run the helm chart.
 
 From the root folder of this repo execute the below from PowerShell
 
-`helm upgrade --install k8s-secops-reports ./charts/k8s-secops-reports --namespace $env:k8sNamespace --wait --set buildID=latest -f ./charts/k8s-secops-reports/dev.values.yaml --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME" --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN" `
+`helm upgrade --install html-reporting-app ./charts/html-reporting-app --namespace $env:k8sNamespace --wait --set buildID=latest -f ./charts/html-reporting-app/dev.values.yaml --set envVars.ARM_CLIENT_ID="$ENV:ARM_CLIENT_ID"  --set envVars.ARM_CLIENT_SECRET="$ENV:ARM_CLIENT_SECRET" --set envVars.ARM_TENANT_ID="$ENV:ARM_TENANT_ID"  --set envVars.ARM_SUBSCRIPTION_ID="$ENV:ARM_SUBSCRIPTION_ID" --set envVars.K8S_RG_NAME="$ENV:K8S_RG_NAME"  --set envVars.K8S_NAME="$ENV:K8S_NAME" --set envVars.SA_RG_NAME="$ENV:SA_RG_NAME"  --set envVars.SA_NAME="$ENV:SA_NAME" --set envVars.SLACK_CHANNEL_TOKEN="$ENV:SLACK_CHANNEL_TOKEN" `
 
 ## Option 3: Run on ad-hoc basis via docker (from powershell)
 

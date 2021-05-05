@@ -1,6 +1,6 @@
 replicaCount: 1
-deploymentName: k8s-secops-reports
-containerName: k8s-secops-reports
+deploymentName: html-reporting-app
+containerName: html-reporting-app
 #securityContext:
 # allowPrivilegeEscalation: false
 #  the docker or the image should have these users or groups setup. #https://stackoverflow.com/questions/53544469/how-to-run-net-core-2-application-in-docker-on-linux-as-non-root/53544813
@@ -25,15 +25,15 @@ envVars:
    ARM_TENANT_ID: "FROMGITSECRETS" 
    ARM_CLIENT_SECRET: "FROMGITSECRETS" 
    ARM_SUBSCRIPTION_ID: "FROMGITSECRETS" 
-   K8S_RG_NAME: "RG-DEV-K8S-CLUSTER" # AKS resource group name
-   K8S_NAME: "metaks-np-ae" #AKS NAME
-   SA_RG_NAME: "RG-DEV-K8S-CLUSTER"  #storage account's resource group name
-   SA_NAME: "azaksmetdevtf01" # storage account name
+   K8S_RG_NAME: "RG-PRD-K8S-CLUSTER" # AKS resource group name
+   K8S_NAME: "metaks-prd-ae" #AKS NAME
+   SA_RG_NAME: "RG-PRD-K8S-CLUSTER"  #storage account's resource group name
+   SA_NAME: "azaksmetprdf01" # storage account name
    SLACK_CHANNEL_TOKEN: "FROMGITSECRETS"
 
 image:
   useImagePullSecrets: false
-  repository: 'g0pinath/k8s-secops-reports'
+  repository: 'g0pinath/html-reporting-app'
   #also can be accessed via $env:ecr_registry_url if running from pipeline
   pullPolicy: Always
 #nodePoolName: smallpool 

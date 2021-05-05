@@ -1,4 +1,0 @@
-apiVersion: v1
-description: chadmintable app hosted in EKS
-name: chadmintable
-version: v0.0.1

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: html-reporting-app
+name: html-reporting-app
+version: v0.0.1
