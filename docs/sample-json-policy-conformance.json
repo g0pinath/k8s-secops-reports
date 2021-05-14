@@ -1,0 +1,75 @@
+{    
+    "clusterName": "sample1",
+    "policyDetails" :
+        [
+            {
+                "name": "policy1",
+                "isFullyCompliant": true,
+                "enforcementMode": "audit",                
+                "policyLastUpdated": "timestamp",
+                "policyLastUpdatedBy": "UserID",
+                "policyCreatedOn": "timestamp",
+                "policyCreatedBy": "UserID",
+                "excludedNameSpaces": "qa",
+                "includedNameSpaces": "*"
+            },
+            {
+                "name": "policy2",
+                "isFullyCompliant": false,
+                "enforcementMode": "deny",
+                "policyLastUpdated": "timestamp",
+                "policyLastUpdatedBy": "UserID",
+                "policyCreatedOn": "timestamp",
+                "policyCreatedBy": "UserID",
+                "excludedNameSpaces": "none",
+                "includedNameSpaces": "*"
+            }
+        ],
+    "namespacePolicyDetails":
+    [
+        {
+            "nameSpaceName": "dev",        
+            "policyName": "policy1",
+            "isFullyCompliant": true,
+            "enforcementMode": "audit",                
+            "policyLastUpdated": "timestamp",
+            "policyLastUpdatedBy": "UserID",
+            "policyCreatedOn": "timestamp",
+            "policyCreatedBy": "UserID",
+            "inheritedFromCluster": true
+        },
+        {
+            "nameSpaceName": "dev",        
+            "policyName": "policy2",
+            "isFullyCompliant": true,
+            "enforcementMode": "audit",                
+            "policyLastUpdated": "timestamp",
+            "policyLastUpdatedBy": "UserID",
+            "policyCreatedOn": "timestamp",
+            "policyCreatedBy": "UserID",
+            "inheritedFromCluster": true
+        },            
+        {
+            "nameSpaceName": "qa",        
+            "policyName": "policy3",
+            "isFullyCompliant": true,
+            "enforcementMode": "audit",                
+            "policyLastUpdated": "timestamp",
+            "policyLastUpdatedBy": "UserID",
+            "policyCreatedOn": "timestamp",
+            "inheritedFromCluster": false
+        },
+        {
+            "nameSpaceName": "qa",        
+            "policyName": "policy2",
+            "isFullyCompliant": false,
+            "enforcementMode": "deny",
+            "policyLastUpdated": "timestamp",
+            "policyLastUpdatedBy": "UserID",
+            "policyCreatedOn": "timestamp",
+            "inheritedFromCluster": true
+        }
+            
+        
+    ]   
+}
